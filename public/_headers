@@ -6,3 +6,6 @@
 
 /*.css
   Content-Type: text/css; charset=utf-8
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
