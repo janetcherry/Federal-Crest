@@ -160,7 +160,7 @@ export default function Login() {
           <div className="w-full max-w-md mt-20">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <div className="mb-8 text-center md:text-left">
-                <h1 className="text-3xl font-serif font-bold text-foreground mb-2">Secure Login</h1>
+                <h1 className="text-3xl font-serif font-bold text-foreground mb-2">Login</h1>
                 <p className="text-muted-foreground">Enter your credentials to access your account.</p>
               </div>
 
