@@ -31,7 +31,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
           <div className="flex space-x-4 items-center">
 
             <Link href="/login" className="flex items-center gap-1.5 text-accent font-medium hover:text-accent/80 transition-colors">
-              <Logo size="sm" withText={false} /> Secure Login
+              <Logo size="sm" withText={false} />  Login
             </Link>
           </div>
         </div>
