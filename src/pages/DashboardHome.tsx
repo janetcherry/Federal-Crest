@@ -151,7 +151,7 @@ export default function DashboardHome() {
                 <div className="absolute top-0 right-0 -mr-4 -mt-4 w-32 h-32 rounded-full bg-primary/20 blur-2xl pointer-events-none" />
                 <CardHeader className="pb-2">
                   <CardDescription className="text-secondary-foreground/70 text-sm font-medium uppercase tracking-wider">Available Balance</CardDescription>
-                  <CardTitle className="text-4xl font-serif text-white tracking-tight">
+                  <CardTitle className="text-4xl  text-white tracking-tight">
                     ${checkingAccount?.balance.toLocaleString('en-US', { minimumFractionDigits: 2 }) ?? "0.00"}
                   </CardTitle>
                 </CardHeader>
@@ -172,7 +172,7 @@ export default function DashboardHome() {
                   <PiggyBank size={16} className="text-blue-500" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-serif font-bold text-foreground">
+                  <div className="text-2xl font-bold text-foreground">
                     ${savingsAccount?.balance.toLocaleString('en-US', { minimumFractionDigits: 2 }) ?? "0.00"}
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
@@ -190,7 +190,7 @@ export default function DashboardHome() {
                   <TrendingUp size={16} className="text-emerald-500" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-serif font-bold text-foreground">
+                  <div className="text-2xl font-bold text-foreground">
                     ${investmentAccount?.balance.toLocaleString('en-US', { minimumFractionDigits: 2 }) ?? "0.00"}
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">Coming soon</p>

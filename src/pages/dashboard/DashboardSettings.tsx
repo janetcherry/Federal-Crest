@@ -7,7 +7,6 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/use-auth";
 import { User, Bell, Globe, Loader2 } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useState, useEffect } from "react";
 import { supabase } from "@/supabaseClient";
@@ -97,10 +96,9 @@ export default function DashboardSettings() {
           </div>
 
           <Tabs defaultValue="profile" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 max-w-md">
+            <TabsList className="grid w-full grid-cols-2 max-w-md">
               <TabsTrigger value="profile">Profile</TabsTrigger>
               <TabsTrigger value="notifications">Notifications</TabsTrigger>
-              <TabsTrigger value="preferences">Preferences</TabsTrigger>
             </TabsList>
 
             <TabsContent value="profile" className="mt-6">
@@ -243,54 +241,6 @@ export default function DashboardSettings() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="preferences" className="mt-6 space-y-6">
-              <Card className="border-border shadow-sm">
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <Globe className="text-primary" size={20} />
-                    <CardTitle className="font-serif">Regional & Display</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label>Language</Label>
-                      <Select value={formData.language} onValueChange={(val) => setFormData({...formData, language: val})}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Language" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="en">English (US)</SelectItem>
-                          <SelectItem value="uk">English (UK)</SelectItem>
-                          <SelectItem value="fr">Français</SelectItem>
-                          <SelectItem value="de">Deutsch</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Timezone</Label>
-                      <Select value={formData.timezone} onValueChange={(val) => setFormData({...formData, timezone: val})}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Timezone" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="est">Eastern Time (ET)</SelectItem>
-                          <SelectItem value="cst">Central Time (CT)</SelectItem>
-                          <SelectItem value="pst">Pacific Time (PT)</SelectItem>
-                          <SelectItem value="gmt">Greenwich Mean Time (GMT)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="border-t border-border bg-muted/10 p-6 flex justify-end">
-                  <Button onClick={handleSaveProfile} disabled={isSaving}>
-                    {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                    Save Preferences
-                  </Button>
-                </CardFooter>
-              </Card>
-            </TabsContent>
           </Tabs>
         </div>
       </DashboardLayout>

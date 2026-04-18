@@ -11,6 +11,7 @@ import { Send, ArrowRight, Shield, Building2, Bitcoin, Copy, CheckCircle2, Zap }
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/supabaseClient";
+import {Checkbox} from "radix-ui";
 
 interface Account {
   id: string;
@@ -30,6 +31,9 @@ export default function SendFunds() {
   const [cryptoCurrency, setCryptoCurrency] = useState("BTC");
   const [step, setStep] = useState(1);
   const [copied, setCopied] = useState(false);
+  const [isInternalTransfer, setIsInternalTransfer] = useState(false);
+  const [bankName, setBankName] = useState("");
+  const [bankAccount, setBankAccount] = useState("");
 
   useEffect(() => {
     if (!user) return;
@@ -45,7 +49,7 @@ export default function SendFunds() {
   }, [user]);
 
   const handleNext = () => {
-    if (step === 1 && amount && recipient && selectedAccount) {
+    if (step === 1 && amount && recipient && selectedAccount && bankAccount && (isInternalTransfer || bankName)) {
       setStep(2);
     }
   };
@@ -76,7 +80,9 @@ export default function SendFunds() {
     setStep(1);
     setAmount("");
     setRecipient("");
-    setCryptoAddress("");
+    setBankName("");
+    setBankAccount("");
+    setIsInternalTransfer(false);
     setSelectedAccount("");
   };
 
@@ -97,28 +103,23 @@ export default function SendFunds() {
 
           <Tabs defaultValue="crypto" className="w-full">
             <TabsList className="grid w-full grid-cols-3 max-w-2xl">
-              <TabsTrigger value="crypto" className="relative">
+              <TabsTrigger value="crypto">
                 <Bitcoin size={16} className="mr-1" /> Crypto
-                <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-[10px] px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                <Zap size={8} /> FASTEST
-              </span>
               </TabsTrigger>
               <TabsTrigger value="domestic">Domestic</TabsTrigger>
               <TabsTrigger value="international">International</TabsTrigger>
             </TabsList>
-
             {/* Crypto Transfer Tab */}
             <TabsContent value="crypto" className="mt-6">
               <Card className="border-border shadow-sm">
                 <CardHeader className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-b border-border pb-6">
                   <CardTitle className="flex items-center gap-2 text-xl font-serif">
                     <Bitcoin className="text-amber-500" size={20} /> Crypto Transfer
-                    <Badge className="ml-2 bg-emerald-500 text-white border-0">
-                      <Zap size={12} className="mr-1" /> Fastest Settlement
-                    </Badge>
+
+
                   </CardTitle>
                   <CardDescription>
-                    Send Bitcoin, Ethereum, or USDC globally in minutes with low fees.
+                    Send Bitcoin, Ethereum, or USDT globally in minutes with low fees.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="pt-6">
@@ -205,17 +206,8 @@ export default function SendFunds() {
                           </p>
                         </div>
 
-                        <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4 flex items-start gap-3">
-                          <Zap size={20} className="text-emerald-500 shrink-0 mt-0.5" />
-                          <div>
-                            <p className="text-sm font-medium text-emerald-700 dark:text-emerald-300">
-                              Fastest Settlement – 10-30 minutes
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              Crypto transfers are processed on-chain and typically confirm within minutes.
-                            </p>
-                          </div>
-                        </div>
+
+
                       </motion.div>
                   ) : (
                       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6 text-center py-6">
@@ -269,7 +261,7 @@ export default function SendFunds() {
               </Card>
             </TabsContent>
 
-            {/* Domestic Transfer Tab (existing, updated to use real accounts) */}
+            {/* Domestic Transfer Tab */}
             <TabsContent value="domestic" className="mt-6">
               <Card className="border-border shadow-sm">
                 <CardHeader className="bg-muted/30 border-b border-border pb-6">
@@ -281,6 +273,7 @@ export default function SendFunds() {
                 <CardContent className="pt-6">
                   {step === 1 ? (
                       <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
+                        {/* From Account */}
                         <div className="space-y-3">
                           <Label htmlFor="from-account">From Account</Label>
                           <Select value={selectedAccount} onValueChange={setSelectedAccount}>
@@ -293,8 +286,8 @@ export default function SendFunds() {
                                     <div className="flex justify-between items-center w-full">
                                       <span>{acc.type} (...{acc.account_number?.slice(-4) || '****'})</span>
                                       <span className="ml-4 font-medium text-muted-foreground">
-                                  ${acc.balance.toLocaleString()}
-                                </span>
+                        ${acc.balance.toLocaleString()}
+                      </span>
                                     </div>
                                   </SelectItem>
                               ))}
@@ -302,17 +295,62 @@ export default function SendFunds() {
                           </Select>
                         </div>
 
+                        {/* Internal Transfer Toggle */}
+                        <div className="flex items-center space-x-3">
+                          {/* Replace the <Checkbox ... /> line with: */}
+                          <input
+                              type="checkbox"
+                              id="internal-transfer"
+                              checked={isInternalTransfer}
+                              onChange={(e) => setIsInternalTransfer(e.target.checked)}
+                              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                          />
+                          <Label htmlFor="internal-transfer" className="cursor-pointer text-sm">
+                            Send to another Federal Crest account (internal transfer)
+                          </Label>
+                        </div>
+
+                        {/* Recipient Name */}
                         <div className="space-y-3">
-                          <Label htmlFor="recipient">Recipient Name or Account</Label>
+                          <Label htmlFor="recipient">Recipient Name</Label>
                           <Input
                               id="recipient"
-                              placeholder="e.g. John Doe or Account Number"
+                              placeholder="e.g. John Doe"
                               className="h-12"
                               value={recipient}
                               onChange={(e) => setRecipient(e.target.value)}
                           />
                         </div>
 
+                        {/* Bank Name (hidden if internal) */}
+                        {!isInternalTransfer && (
+                            <div className="space-y-3">
+                              <Label htmlFor="bank-name">Bank Name</Label>
+                              <Input
+                                  id="bank-name"
+                                  placeholder="e.g. Chase Bank"
+                                  className="h-12"
+                                  value={bankName}
+                                  onChange={(e) => setBankName(e.target.value)}
+                              />
+                            </div>
+                        )}
+
+                        {/* Bank Account Number (always shown, but label changes) */}
+                        <div className="space-y-3">
+                          <Label htmlFor="bank-account">
+                            {isInternalTransfer ? "Federal Crest Account Number" : "Bank Account Number"}
+                          </Label>
+                          <Input
+                              id="bank-account"
+                              placeholder={isInternalTransfer ? "Enter Federal Crest account number" : "Enter account number"}
+                              className="h-12"
+                              value={bankAccount}
+                              onChange={(e) => setBankAccount(e.target.value)}
+                          />
+                        </div>
+
+                        {/* Amount */}
                         <div className="space-y-3">
                           <Label htmlFor="amount">Amount (USD)</Label>
                           <div className="relative">
@@ -339,13 +377,25 @@ export default function SendFunds() {
                             <span className="text-muted-foreground">To</span>
                             <span className="font-medium">{recipient}</span>
                           </div>
+                          {!isInternalTransfer && (
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Bank</span>
+                                <span className="font-medium">{bankName}</span>
+                              </div>
+                          )}
+                          <div className="flex justify-between">
+              <span className="text-muted-foreground">
+                {isInternalTransfer ? "Federal Crest Account" : "Account Number"}
+              </span>
+                            <span className="font-medium">{bankAccount}</span>
+                          </div>
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">Amount</span>
                             <span className="font-medium text-lg">${amount}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">Fee</span>
-                            <span className="font-medium">$0.00</span>
+                            <span className="font-medium">{isInternalTransfer ? "$0.00" : "$0.00"}</span>
                           </div>
                           <div className="border-t border-border pt-4 flex justify-between">
                             <span className="text-foreground font-medium">Total</span>
@@ -362,7 +412,7 @@ export default function SendFunds() {
                   <Button
                       className={`ml-auto ${step === 1 ? 'bg-primary text-primary-foreground' : 'bg-emerald-600 hover:bg-emerald-700 text-white'}`}
                       onClick={step === 1 ? handleNext : handleConfirm}
-                      disabled={step === 1 && (!amount || !recipient || !selectedAccount)}
+                      disabled={step === 1 && (!amount || !recipient || !selectedAccount || !bankAccount || (!isInternalTransfer && !bankName))}
                   >
                     {step === 1 ? (
                         <>Review Transfer <ArrowRight size={16} className="ml-2" /></>

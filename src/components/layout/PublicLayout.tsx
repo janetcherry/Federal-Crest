@@ -71,26 +71,21 @@ export function PublicLayout({ children }: { children: ReactNode }) {
                   <Menu size={24} />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px] border-l-border bg-background p-0">
-                <div className="flex flex-col h-full">
-                  {/* Header with Logo and Close Button */}
+              <SheetContent
+                  side="right"
+                  className="w-[300px] sm:w-[400px] border-l-border bg-background p-0 [&>button]:text-white [&>button]:w-10 [&>button]:h-10 [&>button]:top-4 [&>button]:right-1 [&>button>svg]:w-10 [&>button>svg]:h-7"
+              >                <div className="flex flex-col h-full">
                   <div className="p-6 border-b border-border bg-secondary text-secondary-foreground">
-                    <div className="flex items-center justify-between mb-6">
-                      <Logo size="md" textClassName="text-blue-900 dark:text-blue-400" withText={true} />
-                      {/* Explicit close button – visible on all backgrounds */}
-                      <SheetClose asChild>
-                        <Button variant="ghost" size="icon" className="text-secondary-foreground hover:bg-secondary-foreground/10">
-                          <X size={20} />
-                        </Button>
-                      </SheetClose>
+                    <div className="flex items-center justify-between mb-1">
+                      <Logo size="md" textClassName="text-blue-50 dark:text-blue-400" withText={true} />
                     </div>
-                    <Link href="/login" className="w-full mb-3">
+                    <Link href="/login" className="w-full mb-6">
                       <Button variant="outline" className="w-full justify-start bg-secondary-foreground/10 border-secondary-foreground/20 text-secondary-foreground hover:bg-secondary-foreground/20 hover:text-secondary-foreground">
-                        <Logo size="sm" withText={false} className="mr-2" /> Secure Login
+                        <Logo size="sm" withText={false} className="mr-2" /> Login
                       </Button>
                     </Link>
                     <Link href="/signup" className="w-full">
-                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                      <Button className="w-full mt-1 bg-blue-600 hover:bg-blue-700 text-white">
                         Open Account
                       </Button>
                     </Link>
