@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npm run build",
+  "installCommand": "npm ci --prefer-offline --no-audit --progress=false",
+  "framework": "vite"
+}

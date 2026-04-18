@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
-import { ChevronDown, Menu, Phone, Mail, Globe, HelpCircle } from "lucide-react";
+import { Menu, Phone, Mail, HelpCircle, X} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {Sheet, SheetClose, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import { Logo } from "@/components/Logo";
 
 export function PublicLayout({ children }: { children: ReactNode }) {
@@ -73,10 +73,19 @@ export function PublicLayout({ children }: { children: ReactNode }) {
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px] border-l-border bg-background p-0">
                 <div className="flex flex-col h-full">
+                  {/* Header with Logo and Close Button */}
                   <div className="p-6 border-b border-border bg-secondary text-secondary-foreground">
-                    <Logo size="md" textClassName="text-blue-90 dark:text-blue-400" className="mb-6" />
+                    <div className="flex items-center justify-between mb-6">
+                      <Logo size="md" textClassName="text-blue-900 dark:text-blue-400" withText={true} />
+                      {/* Explicit close button – visible on all backgrounds */}
+                      <SheetClose asChild>
+                        <Button variant="ghost" size="icon" className="text-secondary-foreground hover:bg-secondary-foreground/10">
+                          <X size={20} />
+                        </Button>
+                      </SheetClose>
+                    </div>
                     <Link href="/login" className="w-full mb-3">
-                      <Button variant="outline" className=" mb-4 w-full justify-start bg-secondary-foreground/10 border-secondary-foreground/20 text-secondary-foreground hover:bg-secondary-foreground/20 hover:text-secondary-foreground">
+                      <Button variant="outline" className="w-full justify-start bg-secondary-foreground/10 border-secondary-foreground/20 text-secondary-foreground hover:bg-secondary-foreground/20 hover:text-secondary-foreground">
                         <Logo size="sm" withText={false} className="mr-2" /> Secure Login
                       </Button>
                     </Link>
