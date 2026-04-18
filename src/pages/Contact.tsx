@@ -1,6 +1,6 @@
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Clock, MessageSquare } from "lucide-react";
+import { Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -54,15 +54,6 @@ export default function Contact() {
                     </div>
                   </div>
                   
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                      <MapPin size={20} />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground">Headquarters</h3>
-                      <p className="text-foreground mt-1">Online</p>
-                    </div>
-                  </div>
                 </div>
               </motion.div>
             </div>
