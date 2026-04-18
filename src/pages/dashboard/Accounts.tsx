@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DashboardLayout } from "@/components/layout/DashboardLayout.tsx";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.tsx";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
 import { CreditCard, Eye, EyeOff, Building, LineChart, ShieldCheck, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button.tsx";
 import { motion } from "framer-motion";
-import { supabase } from "@/supabaseClient";
-import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/supabaseClient.ts";
+import { useAuth } from "@/hooks/use-auth.tsx";
 
 interface Account {
   id: string;
@@ -86,7 +86,7 @@ export default function Accounts() {
                 <CardDescription className="text-white/70 uppercase tracking-wider font-medium text-xs mb-1">
                   {account.type}
                 </CardDescription>
-                <CardTitle className="font-serif text-2xl">
+                <CardTitle className=" text-2xl">
                   ${account.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </CardTitle>
               </div>

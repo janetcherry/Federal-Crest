@@ -19,7 +19,7 @@ import NotFound from "@/pages/not-found";
 
 // Dashboard Pages
 import DashboardHome from "@/pages/DashboardHome";
-import Accounts from "@/pages/Accounts";
+import Accounts from "@/pages/dashboard/Accounts.tsx";
 import Transactions from "@/pages/dashboard/Transactions";
 import SendFunds from "@/pages/dashboard/SendFunds";
 import Deposit from "@/pages/dashboard/Deposit";
