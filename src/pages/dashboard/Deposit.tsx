@@ -210,7 +210,12 @@ export default function Deposit() {
                         For fast crypto deposits, please contact our support team to receive the current wallet address.
                       </p>
                       <Button variant="link" className="p-0 h-auto text-blue-600 dark:text-blue-400" asChild>
-                        <a href="mailto:support@crestworldwide.com">Contact Support</a>
+                        <a
+                          href="https://t.me/crestglobalbank"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary font-medium mt-1"
+                            >Contact Support</a>
                       </Button>
                     </div>
                   </div>
