@@ -148,7 +148,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
                 </SheetTrigger>
                 <SheetContent
                     side="left"
-                    className="w-[300px] sm:w-[400px] border-l-border bg-background p-0 [&>button]:text-white [&>button]:w-10 [&>button]:h-10 [&>button]:top-0 [&>button]:right-0 [&>button>svg]:w-5 [&>button>svg]:h-10"
+                    className="w-[300px] sm:w-[400px] border-l-border bg-background p-0  [&>button]:hidden"
                 >
                   <div className="flex flex-col h-full bg-sidebar text-sidebar-foreground">
                     {/* Logo */}
