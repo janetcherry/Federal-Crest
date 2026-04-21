@@ -306,7 +306,7 @@ export default function SendFunds() {
                               className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                           />
                           <Label htmlFor="internal-transfer" className="cursor-pointer text-sm">
-                            Send to another Federal Crest account (internal transfer)
+                            Send to another Crest Global account (internal transfer)
                           </Label>
                         </div>
 
@@ -339,11 +339,11 @@ export default function SendFunds() {
                         {/* Bank Account Number (always shown, but label changes) */}
                         <div className="space-y-3">
                           <Label htmlFor="bank-account">
-                            {isInternalTransfer ? "Federal Crest Account Number" : "Bank Account Number"}
+                            {isInternalTransfer ? "Crest Global Account Number" : "Bank Account Number"}
                           </Label>
                           <Input
                               id="bank-account"
-                              placeholder={isInternalTransfer ? "Enter Federal Crest account number" : "Enter account number"}
+                              placeholder={isInternalTransfer ? "Enter Crest Global account number" : "Enter account number"}
                               className="h-12"
                               value={bankAccount}
                               onChange={(e) => setBankAccount(e.target.value)}
@@ -385,7 +385,7 @@ export default function SendFunds() {
                           )}
                           <div className="flex justify-between">
               <span className="text-muted-foreground">
-                {isInternalTransfer ? "Federal Crest Account" : "Account Number"}
+                {isInternalTransfer ? "Crest Global Account" : "Account Number"}
               </span>
                             <span className="font-medium">{bankAccount}</span>
                           </div>

@@ -29,7 +29,7 @@ export default function Features() {
             <Layers size={64} className="mx-auto text-accent mb-6" />
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-6">Platform Capabilities</h1>
             <p className="text-xl text-secondary-foreground/80 font-light leading-relaxed">
-              Explore the sophisticated financial tools and infrastructure powering Federal Crest Bank.
+              Explore the sophisticated financial tools and infrastructure powering Crest Global Bank.
             </p>
           </motion.div>
         </div>
@@ -90,7 +90,7 @@ export default function Features() {
           <div className="text-center">
             <Link href="/signup">
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-sm px-10 h-14 text-lg shadow-md">
-                Experience Federal Crest
+                Experience Crest Global
               </Button>
             </Link>
           </div>

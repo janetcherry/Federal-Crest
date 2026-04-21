@@ -1,6 +1,6 @@
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { motion } from "framer-motion";
-import { Phone, Mail } from "lucide-react";
+import {Phone,  Mail} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,7 +9,8 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function Contact() {
   return (
-    <PublicLayout>
+
+      <PublicLayout>
       <div className="bg-secondary text-secondary-foreground py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay" />
         <div className="container mx-auto px-4 relative z-10 text-center max-w-3xl">
@@ -49,7 +50,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground">Secure Email</h3>
-                      <p className="text-foreground mt-1">support@federalcrestbank.com</p>
+                      <p className="text-foreground mt-1">support@crestworldwide.com</p>
                       <p className="text-sm text-muted-foreground mt-1">Typical response: &lt; 1 hour</p>
                     </div>
                   </div>

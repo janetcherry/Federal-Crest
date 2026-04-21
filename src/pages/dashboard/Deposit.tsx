@@ -50,12 +50,45 @@ export default function Deposit() {
   }, [cryptoCurrency]);
 
   const fetchDepositDetails = async () => {
-    const { data } = await supabase
+    const { data, error } = await supabase
         .from("deposit_accounts")
         .select("*")
         .eq("user_id", user!.id)
+        .maybeSingle(); // ✅ Use maybeSingle to avoid 406 when no row exists
+
+    if (error) {
+      console.error("Error fetching deposit account:", error);
+      toast({ title: "Error", description: "Could not load deposit details.", variant: "destructive" });
+      return;
+    }
+
+    if (data) {
+      setDepositAccount(data);
+    } else {
+      // No deposit account found – create one automatically
+      await createDepositAccount();
+    }
+  };
+
+  const createDepositAccount = async () => {
+    // Generate a 10-digit account number
+    const accountNumber = Array.from({ length: 10 }, () => Math.floor(Math.random() * 10)).join('');
+
+    const { data, error } = await supabase
+        .from("deposit_accounts")
+        .insert({
+          user_id: user!.id,
+          federal_crest_account_number: accountNumber,
+        })
+        .select()
         .single();
-    if (data) setDepositAccount(data);
+
+    if (error) {
+      console.error("Failed to create deposit account:", error);
+      toast({ title: "Error", description: "Could not create deposit account.", variant: "destructive" });
+    } else if (data) {
+      setDepositAccount(data);
+    }
   };
 
   const fetchAccounts = async () => {
@@ -177,7 +210,7 @@ export default function Deposit() {
                         For fast crypto deposits, please contact our support team to receive the current wallet address.
                       </p>
                       <Button variant="link" className="p-0 h-auto text-blue-600 dark:text-blue-400" asChild>
-                        <a href="mailto:support@federalcrest.com">Contact Support</a>
+                        <a href="mailto:support@crestworldwide.com">Contact Support</a>
                       </Button>
                     </div>
                   </div>
@@ -260,17 +293,148 @@ export default function Deposit() {
 
             {/* Mobile Check Deposit Tab (unchanged) */}
             <TabsContent value="mobile" className="mt-6">
-              {/* ... same as before ... */}
+              <Card className="border-border shadow-sm">
+                <CardHeader>
+                  <CardTitle className="font-serif">Mobile Check Deposit</CardTitle>
+                  <CardDescription>Securely scan and deposit checks from your device.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="border-2 border-dashed border-border rounded-lg p-8 flex flex-col items-center justify-center text-center hover:bg-muted/50 transition-colors cursor-pointer group">
+                      <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform mb-4">
+                        <Camera size={24} />
+                      </div>
+                      <h3 className="font-medium text-foreground mb-1">Front of Check</h3>
+                      <p className="text-sm text-muted-foreground">Tap to scan or upload image</p>
+                    </div>
+
+                    <div className="border-2 border-dashed border-border rounded-lg p-8 flex flex-col items-center justify-center text-center hover:bg-muted/50 transition-colors cursor-pointer group">
+                      <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform mb-4">
+                        <Camera size={24} />
+                      </div>
+                      <h3 className="font-medium text-foreground mb-1">Back of Check</h3>
+                      <p className="text-sm text-muted-foreground">Must be endorsed with signature</p>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 flex justify-end">
+                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2" disabled>
+                      <Upload size={16} /> Submit Deposit
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
 
-            {/* Direct Deposit Tab (unchanged) */}
+            {/* Direct Deposit Tab */}
             <TabsContent value="direct" className="mt-6">
-              {/* ... same as before ... */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="font-serif">Direct Deposit Setup</CardTitle>
+                  <CardDescription>
+                    Provide these details to your employer or benefit provider.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="bg-muted p-4 rounded-md">
+                    <div className="text-sm text-muted-foreground mb-1">Routing Number</div>
+                    <div className="font-mono text-lg font-medium flex items-center gap-2">
+                      {routingNumber}
+                      <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => copyToClipboard(routingNumber, "Routing number")}
+                      >
+                        {copied === "Routing number" ? (
+                            <CheckCircle2 size={16} className="text-emerald-500" />
+                        ) : (
+                            <Copy size={16} />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="bg-muted p-4 rounded-md">
+                    <div className="text-sm text-muted-foreground mb-1">Account Number (Crest Global)</div>
+                    <div className="font-mono text-lg font-medium flex items-center gap-2">
+                      {depositAccount.federal_crest_account_number}
+                      <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                              copyToClipboard(depositAccount.federal_crest_account_number, "Account number")
+                          }
+                      >
+                        {copied === "Account number" ? (
+                            <CheckCircle2 size={16} className="text-emerald-500" />
+                        ) : (
+                            <Copy size={16} />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                  <Button variant="outline" className="w-full mt-4">
+                    Download Direct Deposit Form (PDF)
+                  </Button>
+                </CardContent>
+              </Card>
             </TabsContent>
 
-            {/* Wire Transfer Tab (unchanged) */}
+            {/* Wire Transfer Tab */}
             <TabsContent value="wire" className="mt-6">
-              {/* ... same as before ... */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="font-serif">Incoming Wire Instructions</CardTitle>
+                  <CardDescription>Use these instructions to receive wire transfers.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-muted p-4 rounded-md col-span-2">
+                      <div className="text-sm text-muted-foreground mb-1">Bank Name</div>
+                      <div className="font-medium text-lg"> Crest Global Bank & Trust</div>
+                    </div>
+                    <div className="bg-muted p-4 rounded-md">
+                      <div className="text-sm text-muted-foreground mb-1">SWIFT / BIC Code</div>
+                      <div className="font-mono font-medium flex items-center gap-2">
+                        FCRESTUS33
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => copyToClipboard("FCRESTUS33", "SWIFT code")}
+                        >
+                          {copied === "SWIFT code" ? (
+                              <CheckCircle2 size={16} className="text-emerald-500" />
+                          ) : (
+                              <Copy size={16} />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="bg-muted p-4 rounded-md">
+                      <div className="text-sm text-muted-foreground mb-1">Routing (ABA)</div>
+                      <div className="font-mono font-medium">{routingNumber}</div>
+                    </div>
+                    <div className="bg-muted p-4 rounded-md col-span-2">
+                      <div className="text-sm text-muted-foreground mb-1">Beneficiary Account Number</div>
+                      <div className="font-mono font-medium flex items-center gap-2">
+                        {depositAccount.federal_crest_account_number}
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() =>
+                                copyToClipboard(depositAccount.federal_crest_account_number, "Account number")
+                            }
+                        >
+                          {copied === "Account number" ? (
+                              <CheckCircle2 size={16} className="text-emerald-500" />
+                          ) : (
+                              <Copy size={16} />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>

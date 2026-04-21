@@ -48,7 +48,7 @@ export default function ForgotPassword() {
             <div className="bg-primary text-primary-foreground p-2 rounded-sm">
               <Shield size={24} className="fill-current" />
             </div>
-            <span className="font-serif font-bold text-xl tracking-wide text-foreground">FEDERAL CREST</span>
+            <span className="font-serif font-bold text-xl tracking-wide text-foreground">CREST GLOBAL</span>
           </Link>
           <Link href="/login" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Return to Login

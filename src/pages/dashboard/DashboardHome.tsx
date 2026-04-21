@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "@/hooks/use-auth";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/use-auth.tsx";
+import { DashboardLayout } from "@/components/layout/DashboardLayout.tsx";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.tsx";
+import { Button } from "@/components/ui/button.tsx";
 import { Send, Download, CreditCard, ArrowUpRight, ArrowDownRight, Loader2, PiggyBank, TrendingUp, Users } from "lucide-react";
 import { Link } from "wouter";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { motion } from "framer-motion";
-import { supabase } from "@/supabaseClient";
+import { supabase } from "@/supabaseClient.ts";
 
 interface Account {
   id: string;
@@ -118,7 +118,7 @@ export default function DashboardHome() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
               <h1 className="text-2xl font-serif font-bold text-foreground">
-                Welcome back, {displayName}
+                Welcome, {displayName}
               </h1>
               {isJoint && (
                   <p className="text-muted-foreground flex items-center gap-1 mt-1">

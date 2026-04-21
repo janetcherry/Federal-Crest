@@ -1,6 +1,5 @@
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "wouter";
-
 import { useAuth } from "@/hooks/use-auth";
 import {
   Shield,
@@ -15,11 +14,12 @@ import {
   Bell,
   Search,
   User as UserIcon,
-  ChevronRight
+  ChevronRight,
+  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -146,8 +146,84 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
                     <Menu size={24} />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="p-0 w-[280px] bg-sidebar border-r-sidebar-border">
-                  <SidebarContent />
+                <SheetContent
+                    side="left"
+                    className="w-[300px] sm:w-[400px] border-l-border bg-background p-0 [&>button]:text-white [&>button]:w-10 [&>button]:h-10 [&>button]:top-0 [&>button]:right-0 [&>button>svg]:w-5 [&>button>svg]:h-10"
+                >
+                  <div className="flex flex-col h-full bg-sidebar text-sidebar-foreground">
+                    {/* Logo */}
+                    <div className="h-20 flex items-center px-6 border-b border-sidebar-border/50">
+                      <Logo size="md" withText={true} className="w-full justify-start" />
+                    </div>
+
+                    {/* User Profile */}
+                    <div className="p-6 border-b border-sidebar-border/50 flex items-center gap-4">
+                      <Avatar className="h-10 w-10 border border-sidebar-border bg-sidebar-accent">
+                        <AvatarFallback className="bg-primary text-primary-foreground font-medium">
+                          {initials}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-white truncate">{displayName}</span>
+                        <span className="text-xs text-sidebar-foreground/70 truncate">{user?.email}</span>
+                      </div>
+                    </div>
+
+                    {/* Navigation */}
+                    <div className="flex-1 overflow-y-auto py-6 px-3">
+                      <nav className="space-y-1">
+                        {navItems.map((item) => {
+                          const isActive = location === item.href;
+                          const Icon = item.icon;
+                          return (
+                              <Link key={item.href} href={item.href}>
+                                <div
+                                    className={`flex items-center gap-3 px-3 py-3 rounded-md cursor-pointer transition-colors ${
+                                        isActive
+                                            ? "bg-primary text-primary-foreground font-medium shadow-sm"
+                                            : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                                    }`}
+                                >
+                                  <Icon size={20} className={isActive ? "text-primary-foreground" : ""} />
+                                  <span className="text-sm whitespace-nowrap">{item.label}</span>
+                                </div>
+                              </Link>
+                          );
+                        })}
+
+                        {/* Admin Links (Mobile) */}
+                        {profile?.is_admin && (
+                            <>
+                              <button
+                                  onClick={() => setLocation("/admin/deposits")}
+                                  className="w-full flex items-center gap-3 px-3 py-3 rounded-md cursor-pointer transition-colors text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                              >
+                                <Shield size={20} className="text-amber-500" />
+                                <span className="text-sm whitespace-nowrap">Admin: Deposits</span>
+                              </button>
+                              <button
+                                  onClick={() => setLocation("/admin/users")}
+                                  className="w-full flex items-center gap-3 px-3 py-3 rounded-md cursor-pointer transition-colors text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                              >
+                                <Users size={20} className="text-blue-500" />
+                                <span className="text-sm whitespace-nowrap">Admin: Balances</span>
+                              </button>
+                            </>
+                        )}
+                      </nav>
+                    </div>
+
+                    {/* Logout */}
+                    <div className="p-4 mt-auto border-t border-sidebar-border/50">
+                      <button
+                          onClick={handleLogout}
+                          className="flex items-center gap-3 px-3 py-3 rounded-md text-sidebar-foreground/80 hover:bg-destructive/10 hover:text-destructive transition-colors w-full"
+                      >
+                        <LogOut size={20} />
+                        <span className="text-sm font-medium whitespace-nowrap">Secure Logout</span>
+                      </button>
+                    </div>
+                  </div>
                 </SheetContent>
               </Sheet>
 
@@ -214,14 +290,24 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
                     </Link>
                   </DropdownMenuItem>
 
+                  {/* Admin Links (Desktop) */}
                   {profile?.is_admin && (
-                      <DropdownMenuItem
-                          className="cursor-pointer"
-                          onClick={() => setLocation("/admin/deposits")}
-                      >
-                        <Shield className="mr-2 h-4 w-4 text-amber-500" />
-                        <span>Admin: Deposit Approvals</span>
-                      </DropdownMenuItem>
+                      <>
+                        <DropdownMenuItem
+                            className="cursor-pointer"
+                            onClick={() => setLocation("/admin/deposits")}
+                        >
+                          <Shield className="mr-2 h-4 w-4 text-amber-500" />
+                          <span>Admin: Deposit Approvals</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            className="cursor-pointer"
+                            onClick={() => setLocation("/admin/users")}
+                        >
+                          <Users className="mr-2 h-4 w-4 text-blue-500" />
+                          <span>Admin: User Balances</span>
+                        </DropdownMenuItem>
+                      </>
                   )}
 
                   <DropdownMenuSeparator />

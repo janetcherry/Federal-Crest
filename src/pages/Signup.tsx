@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Shield, Check, ChevronRight, ChevronLeft, AlertCircle, Eye, EyeOff, Users } from "lucide-react";
+import { Check, ChevronRight, ChevronLeft, AlertCircle, Eye, EyeOff, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -126,6 +126,7 @@ export default function Signup() {
           phone: formData.phone,
           account_type: formData.accountType,
           co_owner_name: formData.accountType === "joint" ? formData.coOwnerName : null,
+          is_admin: false,
           address: {
             street: formData.street,
             city: formData.city,
@@ -143,15 +144,38 @@ export default function Signup() {
       return;
     }
 
-    // ✅ No manual profile insert – it will be created on first login
+    // ✅ Insert the profile row – this fires the trigger that creates accounts
+    if (data.user) {
+      const { error: profileError } = await supabase
+          .from("profiles")
+          .insert({
+            id: data.user.id,
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            phone: formData.phone,
+            email: formData.email,
+            street: formData.street,
+            city: formData.city,
+            state: formData.state,
+            zip: formData.zip,
+            country: formData.country,
+            account_type: formData.accountType,
+            co_owner_name: formData.accountType === "joint" ? formData.coOwnerName : null,
+          });
+
+      if (profileError) {
+        console.error("Profile insert error:", profileError);
+        // Even if profile insert fails, the user is created – we can let the use‑auth fallback handle it later.
+      }
+    }
+
     setLocation("/login?signup=success");
-  };
-  return (
+  };  return (
       <div className="min-h-screen bg-background flex flex-col">
         <header className="h-20 border-b border-border bg-card flex items-center justify-between px-6 md:px-12">
           <Link href="/" className="flex items-center gap-3">
             <Logo size="sm" withText={false} />
-            <span className="font-serif font-bold text-xl tracking-wide text-foreground">FEDERAL CREST</span>
+            <span className="font-serif font-bold text-xl tracking-wide text-foreground">CREST GLOBAL</span>
           </Link>
           <div className="text-sm font-medium text-muted-foreground hidden sm:block">
             Secure Application Portal

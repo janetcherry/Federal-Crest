@@ -256,7 +256,7 @@ export default function Home() {
               <h2 className="text-sm font-bold text-accent tracking-widest uppercase mb-4">Our Heritage</h2>
               <h3 className="text-4xl md:text-5xl font-serif font-bold text-white mb-6 leading-tight">Over a Year of Unwavering Trust</h3>
               <p className="text-lg text-secondary-foreground/80 mb-8 font-light leading-relaxed">
-                Since our founding, Federal Crest Bank has stood as a bastion of financial stability. We blend centuries-old banking principles with cutting-edge technological infrastructure to serve the world's most discerning clients.
+                Since our founding, Crest Global Bank has stood as a bastion of financial stability. We blend centuries-old banking principles with cutting-edge technological infrastructure to serve the world's most discerning clients.
               </p>
               <Link href="/about">
                 <Button variant="link" className="text-accent hover:text-white p-0 h-auto font-medium text-base group">

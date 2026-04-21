@@ -118,7 +118,6 @@ export default function Login() {
     );
   }
 
-  const { t } = useTranslation();
 
   return (
       <div className="min-h-screen flex flex-col md:flex-row bg-background">
@@ -131,7 +130,7 @@ export default function Login() {
             <div className="flex items-center gap-3">
               <Logo size="lg" withText={false} />
               <div className="flex flex-col">
-                <span className="font-serif font-bold text-2xl leading-none text-white tracking-wide">FEDERAL CREST</span>
+                <span className="font-serif font-bold text-2xl leading-none text-white tracking-wide">CREST GLOBAL</span>
                 <span className="text-xs tracking-widest text-accent uppercase font-medium">Bank & Trust</span>
               </div>
             </div>
@@ -154,7 +153,7 @@ export default function Login() {
         <div className="w-full md:w-1/2 flex items-center justify-center p-6 md:p-12 relative">
           <Link href="/" className="absolute top-6 left-6 md:hidden flex items-center gap-2">
             <Shield size={24} className="text-primary" />
-            <span className="font-serif font-bold text-foreground">FEDERAL CREST</span>
+            <span className="font-serif font-bold text-foreground">CREST GLOBAL</span>
           </Link>
 
           <div className="w-full max-w-md mt-20">

@@ -22,8 +22,8 @@ export function PublicLayout({ children }: { children: ReactNode }) {
         {/* Utility Bar */}
         <div className="bg-secondary text-secondary-foreground text-xs py-2 px-4 md:px-8 flex justify-between items-center hidden md:flex">
           <div className="flex space-x-6 items-center">
-            <span className="flex items-center gap-1.5 font-medium"><Phone size={12} className="text-accent" /> 1-800-FED-CREST</span>
-            <span className="flex items-center gap-1.5 opacity-80"><Mail size={12} /> support@federalcrestbank.com</span>
+            <span className="flex items-center gap-1.5 font-medium"><Phone size={12} className="text-accent" /> 1-800-CREST-GLOBAL</span>
+            <span className="flex items-center gap-1.5 opacity-80"><Mail size={12} /> support@crestworldwide.com</span>
             <Link href="/contact">
               <span className="flex items-center gap-1.5 opacity-80"><HelpCircle size={12} /> How can we help you?</span>
             </Link>
@@ -157,16 +157,14 @@ export function PublicLayout({ children }: { children: ReactNode }) {
                 <h4 className="font-serif font-semibold text-lg mb-6 text-white">Support</h4>
                 <ul className="space-y-4 text-sm opacity-80">
                   <li><Link href="/contact" className="hover:text-accent transition-colors">Contact Us</Link></li>
-                  <li><Link href="/contact" className="hover:text-accent transition-colors">Branch Locator</Link></li>
                   <li><Link href="/security" className="hover:text-accent transition-colors">Security Center</Link></li>
                   <li><Link href="/contact" className="hover:text-accent transition-colors">Help & FAQs</Link></li>
-                  <li><Link href="/contact" className="hover:text-accent transition-colors">Report Fraud</Link></li>
                 </ul>
               </div>
             </div>
 
             <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs opacity-60">
-              <p>&copy; {new Date().getFullYear()} Federal Crest Bank. All rights reserved. Member FDIC. Equal Housing Lender.</p>
+              <p>&copy; {new Date().getFullYear()} Crest Global Bank. All rights reserved. Member FDIC. Equal Housing Lender.</p>
               <div className="flex space-x-6">
                 <Link href="/contact" className="hover:text-white transition-colors">Privacy Policy</Link>
                 <Link href="/contact" className="hover:text-white transition-colors">Terms of Service</Link>

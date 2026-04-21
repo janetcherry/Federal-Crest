@@ -18,7 +18,7 @@ import ForgotPassword from "@/pages/ForgotPassword";
 import NotFound from "@/pages/not-found";
 
 // Dashboard Pages
-import DashboardHome from "@/pages/DashboardHome";
+import DashboardHome from "@/pages/dashboard/DashboardHome.tsx";
 import Accounts from "@/pages/dashboard/Accounts.tsx";
 import Transactions from "@/pages/dashboard/Transactions";
 import SendFunds from "@/pages/dashboard/SendFunds";
@@ -28,6 +28,7 @@ import DashboardSettings from "@/pages/dashboard/DashboardSettings";
 import UpdatePassword from "@/pages/UpdatePassword.tsx";
 import {AdminRoute} from "@/components/auth/AdminRoute.tsx";
 import DepositApproval from "@/pages/admin/DepositApproval.tsx";
+import UserManagement from "@/pages/admin/UserManagement.tsx";
 
 const queryClient = new QueryClient();
 
@@ -89,7 +90,11 @@ function Router() {
                 <DepositApproval />
             </AdminRoute>
         </Route>
-
+        <Route path="/admin/users">
+            <AdminRoute>
+                <UserManagement />
+            </AdminRoute>
+        </Route>
       <Route component={NotFound} />
 
 

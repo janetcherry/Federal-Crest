@@ -12,7 +12,7 @@ export default function About() {
             <Shield size={48} className="mx-auto text-accent mb-6" />
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">Our Legacy of Trust</h1>
             <p className="text-xl text-secondary-foreground/80 max-w-2xl mx-auto font-light">
-              For over 5 years+, Federal Crest Bank has defined the standard for institutional-grade financial services.
+              For over 5 years+, Crest Global Bank has defined the standard for institutional-grade financial services.
             </p>
           </motion.div>
         </div>
@@ -25,7 +25,7 @@ export default function About() {
               <h2 className="text-sm font-bold text-primary tracking-widest uppercase mb-3">Our Mission</h2>
               <h3 className="text-3xl font-serif font-bold mb-6 text-foreground">Preserving Wealth, Advancing Ambition</h3>
               <p className="text-muted-foreground leading-relaxed mb-6">
-                Federal Crest Bank was established with a singular focus: to provide absolute financial security while facilitating extraordinary growth for our clients. We navigate the complexities of global finance with unmatched precision and discretion.
+                Crest Global Bank was established with a singular focus: to provide absolute financial security while facilitating extraordinary growth for our clients. We navigate the complexities of global finance with unmatched precision and discretion.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 Our approach combines the prudence of traditional banking with the agility of modern financial technology, ensuring our clients remain at the vanguard of economic opportunity.
@@ -53,7 +53,7 @@ export default function About() {
           <Building size={48} className="mx-auto text-primary mb-6" />
           <h2 className="text-3xl font-serif font-bold text-foreground mb-6">Leadership</h2>
           <p className="text-muted-foreground leading-relaxed">
-            Our executive committee comprises industry veterans drawn from the world's leading financial institutions, regulatory bodies, and technology enterprises. Together, they steer Federal Crest Bank with unwavering commitment to our core principles.
+            Our executive committee comprises industry veterans drawn from the world's leading financial institutions, regulatory bodies, and technology enterprises. Together, they steer Crest Global Bank with unwavering commitment to our core principles.
           </p>
         </div>
       </div>

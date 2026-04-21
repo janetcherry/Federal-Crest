@@ -36,8 +36,7 @@ export function Logo({
     );
 
     const textElement = withText && (
-        <span className={`font-serif font-bold text-xl tracking-wide whitespace-nowrap ${textClassName}`}>
-      FEDERAL CREST
+        <span className={`font-serif font-bold text-xl tracking-wide whitespace-nowrap ${textClassName}`}> CREST GLOBAL
     </span>
     );
 
