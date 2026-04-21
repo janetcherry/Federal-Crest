@@ -53,7 +53,7 @@ export default function Deposit() {
     const { data, error } = await supabase
         .from("deposit_accounts")
         .select("*")
-        .eq("user_id", user!.id)
+        .eq("user_id", user!.id)  // ✅ Filters by current user
         .maybeSingle(); // ✅ Use maybeSingle to avoid 406 when no row exists
 
     if (error) {
