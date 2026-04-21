@@ -39,7 +39,14 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground">Global Concierge</h3>
-                      <p className="text-primary font-medium mt-1">+1-252-673-1191</p>
+                      <a
+                          href="https://t.me/crestglobalbank"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary font-medium mt-1"
+                      >
+                        Message on Telegram
+                      </a>
                       <p className="text-sm text-muted-foreground mt-1">Available 24/7/365</p>
                     </div>
                   </div>
@@ -51,7 +58,6 @@ export default function Contact() {
                     <div>
                       <h3 className="font-semibold text-foreground">Secure Email</h3>
                       <p className="text-foreground mt-1">support@crestworldwide.com</p>
-                      <p className="text-sm text-muted-foreground mt-1">Typical response: &lt; 1 hour</p>
                     </div>
                   </div>
                   
