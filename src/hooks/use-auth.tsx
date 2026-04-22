@@ -23,8 +23,8 @@ interface Profile {
   language?: string;
   timezone?: string;
   email?: string;
-  account_type?: string;      // Added for joint account
-  co_owner_name?: string;     // Added for joint account
+  account_type?: string;
+  co_owner_name?: string;
 }
 
 interface AuthContextType {
@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     fetchingProfile.current = true;
 
     try {
-      // Single select call – includes all columns
+      // First, try to get existing profile
       const { data, error } = await supabase
           .from("profiles")
           .select("*")
@@ -64,8 +64,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      // Profile doesn't exist – create from metadata (fallback)
-      console.log("Profile not found, creating from metadata...");
+      // Profile doesn't exist – upsert from metadata
+      console.log("Profile not found, upserting from metadata...");
       const metadata = userMetadata || {};
       const newProfile = {
         id: userId,
@@ -82,12 +82,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         co_owner_name: metadata.co_owner_name || null,
       };
 
-      const { error: insertError } = await supabase
+      // ✅ Use upsert with onConflict to avoid 409 errors
+      const { error: upsertError } = await supabase
           .from("profiles")
-          .insert(newProfile);
+          .upsert(newProfile, { onConflict: "id" });
 
-      if (insertError) {
-        console.error("Failed to create profile:", insertError);
+      if (upsertError) {
+        console.error("Failed to upsert profile:", upsertError);
       } else {
         setProfile(newProfile as Profile);
       }
@@ -111,12 +112,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
-      if (session?.user) {
+      // Only fetch profile if session exists and event is not a token refresh
+      if (session?.user && event !== 'TOKEN_REFRESHED') {
         fetchProfile(session.user.id, session.user.user_metadata);
-      } else {
+      } else if (!session) {
         setProfile(null);
       }
-      setIsLoading(false);
     });
 
     return () => {
