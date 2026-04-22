@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     fetchingProfile.current = true;
 
     try {
-      // First try to get existing profile
+      // 1. Try to fetch existing profile
       const { data, error } = await supabase
           .from("profiles")
           .select("*")
@@ -64,7 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      // Profile doesn't exist – call RPC to upsert securely
+      // 2. Profile doesn't exist – call the RPC function (bypasses RLS)
       console.log("Profile not found, calling upsert_profile RPC...");
       const metadata = userMetadata || {};
 
@@ -85,7 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (rpcError) throw rpcError;
 
-      // Fetch the newly created profile
+      // 3. Fetch the newly created profile
       const { data: newProfile, error: fetchError } = await supabase
           .from("profiles")
           .select("*")
@@ -99,8 +99,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       fetchingProfile.current = false;
     }
-  };
-  useEffect(() => {
+  };  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
