@@ -43,9 +43,7 @@ function Router() {
       <Route path="/security" component={SecurityPublic} />
       <Route path="/contact" component={Contact} />
 
-
-
-        {/* Auth Pages */}
+                {/* Auth Pages */}
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/forgot-password" component={ForgotPassword} />
@@ -98,9 +96,6 @@ function Router() {
                 <UserManagement />
             </AdminRoute>
         </Route>
-      <Route component={NotFound} />
-
-
     </Switch>
   );
 }
