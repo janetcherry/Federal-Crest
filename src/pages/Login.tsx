@@ -4,15 +4,14 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Shield, Eye, EyeOff, Loader2, Lock, AlertCircle, CheckCircle } from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, AlertCircle, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { supabase } from "@/supabaseClient";
 import { useAuth } from "@/hooks/use-auth";
-import {Logo} from "@/components/Logo.tsx";
-import { useTranslation } from 'react-i18next';
+import { Logo } from "@/components/Logo.tsx";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -38,7 +37,25 @@ export default function Login() {
     },
   });
 
-  // Redirect only when auth is fully loaded and user is authenticated
+  // Process access token from URL hash (email confirmation)
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token')) {
+      // Supabase automatically processes the hash and establishes the session.
+      // We just need to clean the URL.
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, []);
+
+  // Show signup success message if redirected from signup
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("signup") === "success") {
+      setSuccessMessage("Account created! Please check your email to confirm your email.");
+    }
+  }, []);
+
+  // Redirect when authenticated
   useEffect(() => {
     if (!authLoading && isAuthenticated && !shouldRedirect) {
       setShouldRedirect(true);
@@ -46,27 +63,13 @@ export default function Login() {
     }
   }, [authLoading, isAuthenticated, shouldRedirect, setLocation]);
 
-  // Check for email confirmation / signup success
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash && hash.includes("access_token")) {
-      setSuccessMessage("Email confirmed successfully! You can now sign in.");
-      window.history.replaceState(null, "", window.location.pathname);
-    }
-
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("signup") === "success") {
-      setSuccessMessage("Account created! Please check your email to confirm your email.");
-    }
-  }, []);
-
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     setIsSubmitting(true);
     setError(null);
     setSuccessMessage(null);
 
     try {
-      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       });
@@ -83,33 +86,13 @@ export default function Login() {
         return;
       }
 
-      // ✅ Log successful sign-in
-      if (data?.user) {
-        // Get client IP (optional – uses a free public API)
-        let ipAddress = "unknown";
-        try {
-          const ipRes = await fetch("https://api.ipify.org?format=json");
-          const ipData = await ipRes.json();
-          ipAddress = ipData.ip;
-        } catch (ipErr) {
-          console.warn("Could not fetch IP address:", ipErr);
-        }
-
-        // Call the RPC function to log activity
-        await supabase.rpc("log_signin", {
-          user_id: data.user.id,
-          ip: ipAddress,
-          user_agent: navigator.userAgent,
-        });
-      }
-
       // Auth successful – the useEffect will handle redirect
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
       setIsSubmitting(false);
     }
   }
-  // Show loading spinner while auth is initializing OR redirect is pending
+
   if (authLoading || shouldRedirect) {
     return (
         <div className="min-h-screen flex items-center justify-center bg-background">
@@ -117,7 +100,6 @@ export default function Login() {
         </div>
     );
   }
-
 
   return (
       <div className="min-h-screen flex flex-col md:flex-row bg-background">
@@ -152,7 +134,7 @@ export default function Login() {
         {/* Right side - Form */}
         <div className="w-full md:w-1/2 flex items-center justify-center p-6 md:p-12 relative">
           <Link href="/" className="absolute top-6 left-6 md:hidden flex items-center gap-2">
-            <Shield size={24} className="text-primary" />
+            <Logo size="sm" withText={false} />
             <span className="font-serif font-bold text-foreground">CREST GLOBAL</span>
           </Link>
 
@@ -163,7 +145,6 @@ export default function Login() {
                 <p className="text-muted-foreground">Enter your credentials to access your account.</p>
               </div>
 
-              {/* Success Message */}
               {successMessage && (
                   <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-lg flex items-start gap-3">
                     <CheckCircle size={20} className="text-emerald-500 shrink-0 mt-0.5" />
@@ -171,7 +152,6 @@ export default function Login() {
                   </div>
               )}
 
-              {/* Error Message */}
               {error && (
                   <div className="mb-6 p-4 bg-destructive/10 border border-destructive/30 rounded-lg flex items-start gap-3">
                     <AlertCircle size={20} className="text-destructive shrink-0 mt-0.5" />
