@@ -42,12 +42,15 @@ function Router() {
       <Route path="/services" component={Services} />
       <Route path="/security" component={SecurityPublic} />
       <Route path="/contact" component={Contact} />
-      
-      {/* Auth Pages */}
+
+
+
+        {/* Auth Pages */}
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/forgot-password" component={ForgotPassword} />
         <Route path="/update-password" component={UpdatePassword} />
+        <Route component={NotFound} /> {/* This must be last */}
 
       {/* Protected Dashboard Pages */}
       <Route path="/dashboard">
