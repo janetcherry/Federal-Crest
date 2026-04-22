@@ -143,31 +143,55 @@ export default function Signup() {
       setIsLoading(false);
       return;
     }
-
-    // ✅ Insert the profile row – this fires the trigger that creates accounts
     if (data.user) {
       const { error: profileError } = await supabase
           .from("profiles")
-          .insert({
-            id: data.user.id,
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            phone: formData.phone,
-            email: formData.email,
-            street: formData.street,
-            city: formData.city,
-            state: formData.state,
-            zip: formData.zip,
-            country: formData.country,
-            account_type: formData.accountType,
-            co_owner_name: formData.accountType === "joint" ? formData.coOwnerName : null,
-          });
+          .upsert(
+              {
+                id: data.user.id,
+                first_name: formData.firstName,
+                last_name: formData.lastName,
+                phone: formData.phone,
+                email: formData.email,
+                street: formData.street,
+                city: formData.city,
+                state: formData.state,
+                zip: formData.zip,
+                country: formData.country,
+                account_type: formData.accountType,
+                co_owner_name: formData.accountType === "joint" ? formData.coOwnerName : null,
+              },
+              { onConflict: "id" }
+          );
 
       if (profileError) {
-        console.error("Profile insert error:", profileError);
-        // Even if profile insert fails, the user is created – we can let the use‑auth fallback handle it later.
+        console.error("Profile upsert error:", profileError);
       }
     }
+    // ✅ Insert the profile row – this fires the trigger that creates accounts
+    // if (data.user) {
+    //   const { error: profileError } = await supabase
+    //       .from("profiles")
+    //       .insert({
+    //         id: data.user.id,
+    //         first_name: formData.firstName,
+    //         last_name: formData.lastName,
+    //         phone: formData.phone,
+    //         email: formData.email,
+    //         street: formData.street,
+    //         city: formData.city,
+    //         state: formData.state,
+    //         zip: formData.zip,
+    //         country: formData.country,
+    //         account_type: formData.accountType,
+    //         co_owner_name: formData.accountType === "joint" ? formData.coOwnerName : null,
+    //       });
+    //
+    //   if (profileError) {
+    //     console.error("Profile insert error:", profileError);
+    //     // Even if profile insert fails, the user is created – we can let the use‑auth fallback handle it later.
+    //   }
+    // }
 
     setLocation("/login?signup=success");
   };  return (
