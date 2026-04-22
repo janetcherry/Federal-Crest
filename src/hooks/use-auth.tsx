@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     fetchingProfile.current = true;
 
     try {
-      // First, try to get existing profile
+      // First, try to get the existing profile
       const { data, error } = await supabase
           .from("profiles")
           .select("*")
@@ -64,34 +64,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      // Profile doesn't exist – upsert from metadata
-      console.log("Profile not found, upserting from metadata...");
+      // Profile doesn't exist – call the secure function to upsert it
+      console.log("Profile not found, calling upsert_profile function...");
       const metadata = userMetadata || {};
-      const newProfile = {
-        id: userId,
-        first_name: metadata.first_name || "",
-        last_name: metadata.last_name || "",
-        phone: metadata.phone || "",
-        email: metadata.email || "",
-        street: metadata.address?.street || "",
-        city: metadata.address?.city || "",
-        state: metadata.address?.state || "",
-        zip: metadata.address?.zip || "",
-        country: metadata.address?.country || "",
-        account_type: metadata.account_type || "single",
-        co_owner_name: metadata.co_owner_name || null,
-      };
 
-      // ✅ Use upsert with onConflict to avoid 409 errors
-      const { error: upsertError } = await supabase
-          .from("profiles")
-          .upsert(newProfile, { onConflict: "id" });
+      const { error: rpcError } = await supabase.rpc("upsert_profile", {
+        user_id: userId,
+        user_email: metadata.email || "",
+        user_first_name: metadata.first_name || "",
+        user_last_name: metadata.last_name || "",
+        user_phone: metadata.phone || "",
+        user_street: metadata.address?.street || "",
+        user_city: metadata.address?.city || "",
+        user_state: metadata.address?.state || "",
+        user_zip: metadata.address?.zip || "",
+        user_country: metadata.address?.country || "",
+        user_account_type: metadata.account_type || "single",
+        user_co_owner_name: metadata.co_owner_name || null,
+      });
 
-      if (upsertError) {
-        console.error("Failed to upsert profile:", upsertError);
-      } else {
-        setProfile(newProfile as Profile);
+      if (rpcError) {
+        console.error("Failed to upsert profile via RPC:", rpcError);
+        return;
       }
+
+      // Fetch the newly created profile
+      const { data: newProfile, error: fetchError } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", userId)
+          .single();
+
+      if (fetchError) throw fetchError;
+      setProfile(newProfile as Profile);
     } catch (error) {
       console.error("Profile fetch error:", error);
     } finally {
