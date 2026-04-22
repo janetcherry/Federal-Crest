@@ -33,73 +33,76 @@ import UserManagement from "@/pages/admin/UserManagement.tsx";
 const queryClient = new QueryClient();
 
 function Router() {
-  return (
-    <Switch>
-      {/* Public Pages */}
-      <Route path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/features" component={Features} />
-      <Route path="/services" component={Services} />
-      <Route path="/security" component={SecurityPublic} />
-      <Route path="/contact" component={Contact} />
+    return (
+        <Switch>
+            {/* Public Pages */}
+            <Route path="/" component={Home} />
+            <Route path="/about" component={About} />
+            <Route path="/features" component={Features} />
+            <Route path="/services" component={Services} />
+            <Route path="/security" component={SecurityPublic} />
+            <Route path="/contact" component={Contact} />
 
-                {/* Auth Pages */}
-      <Route path="/login" component={Login} />
-      <Route path="/signup" component={Signup} />
-      <Route path="/forgot-password" component={ForgotPassword} />
-        <Route path="/update-password" component={UpdatePassword} />
-        <Route component={NotFound} /> {/* This must be last */}
+            {/* Auth Pages */}
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="/update-password" component={UpdatePassword} />
 
-      {/* Protected Dashboard Pages */}
-      <Route path="/dashboard">
-        <ProtectedRoute>
-          <DashboardHome />
-        </ProtectedRoute>
-      </Route>
-      <Route path="/dashboard/accounts">
-        <ProtectedRoute>
-          <Accounts />
-        </ProtectedRoute>
-      </Route>
-      <Route path="/dashboard/transactions">
-        <ProtectedRoute>
-          <Transactions />
-        </ProtectedRoute>
-      </Route>
-      <Route path="/dashboard/send">
-        <ProtectedRoute>
-          <SendFunds />
-        </ProtectedRoute>
-      </Route>
-      <Route path="/dashboard/deposit">
-        <ProtectedRoute>
-          <Deposit />
-        </ProtectedRoute>
-      </Route>
-      <Route path="/dashboard/security">
-        <ProtectedRoute>
-          <DashboardSecurity />
-        </ProtectedRoute>
-      </Route>
-      <Route path="/dashboard/settings">
-        <ProtectedRoute>
-          <DashboardSettings />
-        </ProtectedRoute>
-      </Route>
-        <Route path="/admin/deposits">
-            <AdminRoute>
-                <DepositApproval />
-            </AdminRoute>
-        </Route>
-        <Route path="/admin/users">
-            <AdminRoute>
-                <UserManagement />
-            </AdminRoute>
-        </Route>
-    </Switch>
-  );
+            {/* Admin Routes */}
+            <Route path="/admin/deposits">
+                <AdminRoute>
+                    <DepositApproval />
+                </AdminRoute>
+            </Route>
+            <Route path="/admin/users">
+                <AdminRoute>
+                    <UserManagement />
+                </AdminRoute>
+            </Route>
+
+            {/* Protected Dashboard Routes */}
+            <Route path="/dashboard">
+                <ProtectedRoute>
+                    <DashboardHome />
+                </ProtectedRoute>
+            </Route>
+            <Route path="/dashboard/accounts">
+                <ProtectedRoute>
+                    <Accounts />
+                </ProtectedRoute>
+            </Route>
+            <Route path="/dashboard/transactions">
+                <ProtectedRoute>
+                    <Transactions />
+                </ProtectedRoute>
+            </Route>
+            <Route path="/dashboard/send">
+                <ProtectedRoute>
+                    <SendFunds />
+                </ProtectedRoute>
+            </Route>
+            <Route path="/dashboard/deposit">
+                <ProtectedRoute>
+                    <Deposit />
+                </ProtectedRoute>
+            </Route>
+            <Route path="/dashboard/security">
+                <ProtectedRoute>
+                    <DashboardSecurity />
+                </ProtectedRoute>
+            </Route>
+            <Route path="/dashboard/settings">
+                <ProtectedRoute>
+                    <DashboardSettings />
+                </ProtectedRoute>
+            </Route>
+
+            {/* Catch-all 404 – MUST BE LAST */}
+            <Route component={NotFound} />
+        </Switch>
+    );
 }
-
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
